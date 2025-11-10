@@ -1,10 +1,10 @@
 from flask import Flask
-from flask_sqlalchemy import flask_sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate 
 
 app=Flask(__name__)
 #create app
-@app.route('/')
+
 
 #data base configuration
 
@@ -17,6 +17,8 @@ db=SQLAlchemy(app)
 migrate=Migrate(app,db)
 
 
+
+@app.route('/')
 def home():
     return "API is running!"
 
