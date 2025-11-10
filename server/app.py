@@ -11,6 +11,12 @@ app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///camp.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
+#initialize extensions
+
+db=SQLAlchemy(app)
+migrate=Migrate(app,db)
+
+
 def home():
     return "API is running!"
 
