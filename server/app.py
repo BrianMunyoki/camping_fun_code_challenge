@@ -23,6 +23,12 @@ def get_campers():
     campers = Camper.query.all()
     return jsonify([c.to_dict() for c in campers]), 200
 
+@app.get("/campers/<int:id>")
+def get_camper(id):
+    camper = Camper.query.get(id)
+    if not camper:
+        return jsonify({"error": "Camper not found"}), 404
+    return jsonify(camper.to_dict(include_signups=True)), 200
 
 if __name__=="__main__":
     app.run(port=5555,debug=True)
