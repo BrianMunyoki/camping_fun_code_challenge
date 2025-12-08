@@ -5,8 +5,8 @@ with app.app_context():
     db.drop_all()
     db.create_all()
 
-    camper1=Camper(name="Brian",age=25)
-    camper2=Camper(name="Jane",age=22)
+    camper1=Camper(name="Brian",age=15)
+    camper2=Camper(name="Jane",age=15)
 
     activity1=Activity(name="Hiking",difficulty="Medium")
     activity2=Activity(name="Swimming",difficulty="Easy")

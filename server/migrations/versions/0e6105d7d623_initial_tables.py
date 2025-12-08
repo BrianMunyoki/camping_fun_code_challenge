@@ -1,8 +1,8 @@
 """initial tables
 
-Revision ID: 138e47edf344
+Revision ID: 0e6105d7d623
 Revises: 
-Create Date: 2025-12-08 10:50:27.485130
+Create Date: 2025-12-08 13:37:51.590554
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '138e47edf344'
+revision = '0e6105d7d623'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,7 +21,7 @@ def upgrade():
     op.create_table('activities',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
-    sa.Column('difficulty', sa.String(), nullable=True),
+    sa.Column('difficulty', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('campers',
@@ -33,8 +33,8 @@ def upgrade():
     op.create_table('signups',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('time', sa.Integer(), nullable=False),
-    sa.Column('camper_id', sa.Integer(), nullable=True),
-    sa.Column('activity_id', sa.Integer(), nullable=True),
+    sa.Column('camper_id', sa.Integer(), nullable=False),
+    sa.Column('activity_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['activity_id'], ['activities.id'], ),
     sa.ForeignKeyConstraint(['camper_id'], ['campers.id'], ),
     sa.PrimaryKeyConstraint('id')

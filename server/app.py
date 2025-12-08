@@ -23,8 +23,9 @@ def get_campers():
 def get_camper(id):
     camper = Camper.query.get(id)
     if camper:
-       return jsonify(camper.to_dict()), 200
+       return jsonify(camper.to_dict(rules=('-signups', '-activities'))), 200
     return jsonify({"error": "Camper not found"}), 404
+
 #posting each campers details
 @app.route('/campers', methods=['POST'])
 def create_camper():
@@ -91,6 +92,7 @@ def create_signup():
     except Exception as e:
         db.session.rollback()
         return jsonify({"errors": [str(e)]}), 400
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
