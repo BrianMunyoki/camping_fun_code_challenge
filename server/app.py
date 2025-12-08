@@ -60,6 +60,10 @@ def update_camper(id):
 
     except ValueError:
         return jsonify({"errors": ["validation errors"]}), 400
+@app.get("/activities")
+def get_activities():
+    activities = Activity.query.all()
+    return jsonify([a.to_dict() for a in activities]), 200
 
 
 if __name__=="__main__":
