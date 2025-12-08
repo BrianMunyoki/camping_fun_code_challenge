@@ -91,6 +91,44 @@ def create_signup():
 
     except ValueError:
         return jsonify({"errors": ["validation errors"]}), 400
+def to_dict(self, include_signups=False):
+    data = {
+        "id": self.id,
+        "name": self.name,
+        "age": self.age
+    }
+
+    if include_signups:
+        data["signups"] = [
+            {
+                "id": s.id,
+                "time": s.time,
+                "activity": {
+                    "id": s.activity.id,
+                    "name": s.activity.name
+                }
+            }
+            for s in self.signups
+        ]
+
+    return data
+def to_dict(self):
+    return {
+        "id": self.id,
+        "name": self.name,
+        "difficulty": self.difficulty
+    }
+def to_dict(self, include_nested=False):
+    data = {
+        "id": self.id,
+        "time": self.time
+    }
+
+    if include_nested:
+        data["camper"] = self.camper.to_dict()
+        data["activity"] = self.activity.to_dict()
+
+    return data
 
 
 if __name__=="__main__":
