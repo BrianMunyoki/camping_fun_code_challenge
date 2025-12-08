@@ -29,6 +29,19 @@ def get_camper(id):
     if not camper:
         return jsonify({"error": "Camper not found"}), 404
     return jsonify(camper.to_dict(include_signups=True)), 200
+@app.post("/campers")
+def create_camper():
+    data = request.get_json()
+
+    try:
+        camper = Camper(name=data.get("name"), age=data.get("age"))
+        db.session.add(camper)
+        db.session.commit()
+        return camper.to_dict(), 201
+
+    except ValueError:
+        return jsonify({"errors": ["validation errors"]}), 400
+
 
 if __name__=="__main__":
     app.run(port=5555,debug=True)
