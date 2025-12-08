@@ -41,6 +41,25 @@ def create_camper():
 
     except ValueError:
         return jsonify({"errors": ["validation errors"]}), 400
+@app.patch("/campers/<int:id>")
+def update_camper(id):
+    camper = Camper.query.get(id)
+    if not camper:
+        return jsonify({"error": "Camper not found"}), 404
+
+    data = request.get_json()
+
+    try:
+        if "name" in data:
+            camper.name = data["name"]
+        if "age" in data:
+            camper.age = data["age"]
+
+        db.session.commit()
+        return camper.to_dict(), 202
+
+    except ValueError:
+        return jsonify({"errors": ["validation errors"]}), 400
 
 
 if __name__=="__main__":
