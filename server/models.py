@@ -8,7 +8,18 @@ class Camper(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     age = db.Column(db.Integer)
-
+    @validates('name')
+    def validate_name(self,key,value):
+        if value=="":
+            raise ValueError("value must not be empty")
+        return value
+    @validate("age")
+    def validate_age(self,key,value):
+        if not isinstance(Value,int):
+            raise ValueError("value must be an integer")
+        if Value ,8 or Value> 18:
+            raise ValueError("age must be between 8 and 18")
+        return Value
     # Relationship
     signups = db.relationship('Signup', back_populates='camper', cascade='all, delete-orphan')
 
