@@ -18,9 +18,11 @@ migrate=Migrate(app,db)
 
 
 
-@app.route('/')
-def home():
-    return "API is running!"
+@app.get("/campers")
+def get_campers():
+    campers = Camper.query.all()
+    return jsonify([c.to_dict() for c in campers]), 200
+
 
 if __name__=="__main__":
     app.run(port=5555,debug=True)
