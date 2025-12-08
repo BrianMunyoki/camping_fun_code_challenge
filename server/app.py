@@ -73,6 +73,24 @@ def delete_activity(id):
     db.session.delete(activity)
     db.session.commit()
     return "", 204
+@app.post("/signups")
+def create_signup():
+    data = request.get_json()
+
+    try:
+        signup = Signup(
+            time=data.get("time"),
+            camper_id=data.get("camper_id"),
+            activity_id=data.get("activity_id")
+        )
+
+        db.session.add(signup)
+        db.session.commit()
+
+        return signup.to_dict(include_nested=True), 201
+
+    except ValueError:
+        return jsonify({"errors": ["validation errors"]}), 400
 
 
 if __name__=="__main__":
