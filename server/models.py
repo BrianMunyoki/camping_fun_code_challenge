@@ -50,6 +50,14 @@ class Signup(db.Model):
     camper_id = db.Column(db.Integer, db.ForeignKey('campers.id'))
     activity_id = db.Column(db.Integer, db.ForeignKey('activities.id'))
 
+    @validates("time")
+    def validate_time(key,value):
+        if no isinstance(value,int):
+            raise ValueError("time must be an integer")
+        if value <0 or value>24:
+            raise ValueError("time must be between 0 and 24")
+        return value
+
     # Relationship
     camper = db.relationship('Camper', back_populates='signups')
     activity = db.relationship('Activity', back_populates='signups')
