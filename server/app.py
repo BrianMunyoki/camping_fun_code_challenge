@@ -12,20 +12,20 @@ db.init_app(app)
 
 @app.route('/')
 def index():
-    return '<h1>Camping Trip API</h1>'
-
+    return '<h1>Welcome to the camping Trip</h1>'
+#get all campers
 @app.route('/campers', methods=['GET'])
 def get_campers():
     campers = Camper.query.all()
     return jsonify([camper.to_dict(rules=('-signups', '-activities')) for camper in campers]), 200
-
+#get each campers id
 @app.route('/campers/<int:id>', methods=['GET'])
 def get_camper(id):
     camper = Camper.query.get(id)
     if camper:
        return jsonify(camper.to_dict()), 200
     return jsonify({"error": "Camper not found"}), 404
-
+#posting each campers details
 @app.route('/campers', methods=['POST'])
 def create_camper():
     data = request.get_json()
@@ -40,7 +40,7 @@ def create_camper():
     except Exception as e:
         db.session.rollback()
         return jsonify({"errors": [str(e)]}), 400
-
+#Patching each capers details
 @app.route('/campers/<int:id>', methods=['PATCH'])
 def update_camper(id):
     camper = Camper.query.get(id)
@@ -60,11 +60,12 @@ def update_camper(id):
         db.session.rollback()
         return jsonify({"errors": [str(e)]}), 400
 
+#Quering all camping activities
 @app.route('/activities', methods=['GET'])
 def get_activities():
     activities = Activity.query.all()
     return jsonify([activity.to_dict() for activity in activities]), 200
-
+#Deleting each camping activity
 @app.route('/activities/<int:id>', methods=['DELETE'])
 def delete_activity(id):
     activity = Activity.query.get(id)
@@ -74,7 +75,7 @@ def delete_activity(id):
     db.session.delete(activity)
     db.session.commit()
     return '', 204
-
+#posting each sign up
 @app.route('/signups', methods=['POST'])
 def create_signup():
     data = request.get_json()

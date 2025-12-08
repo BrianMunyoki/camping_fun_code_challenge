@@ -3,25 +3,26 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 
 db = SQLAlchemy()
-
+#campers table
 class Camper(db.Model, SerializerMixin):
     __tablename__ = 'campers'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     age = db.Column(db.Integer, nullable=False)
-    
+    #Relationship bentween sign up an campers#
     signups = db.relationship('Signup', back_populates='camper', cascade='all, delete-orphan')
+    #Realtionship between activity and sign ups
     activities = db.relationship('Activity', secondary='signups', back_populates='campers')
     
     serialize_rules = ('-signups.camper', '-activities.campers')
-    
+    #name validations
     @validates('name')
     def validate_name(self, key, name):
         if not name:
             raise ValueError("Name is required")
         return name
-    
+    #age validation
     @validates('age')
     def validate_age(self, key, age):
         if not isinstance(age, int) or age < 8 or age > 18:
@@ -30,22 +31,23 @@ class Camper(db.Model, SerializerMixin):
     
     def __repr__(self):
         return f'<Camper {self.id}: {self.name}>'
-
+#Activity table
 class Activity(db.Model, SerializerMixin):
     __tablename__ = 'activities'
     
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     difficulty = db.Column(db.Integer, nullable=False)
-    
+    #relationshi between sign up and activvity
     signups = db.relationship('Signup', back_populates='activity', cascade='all, delete-orphan')
+    #relationship between camper and sign up
     campers = db.relationship('Camper', secondary='signups', back_populates='activities')
     
     serialize_rules = ('-signups.activity', '-campers.activities')
     
     def __repr__(self):
         return f'<Activity {self.id}: {self.name}>'
-
+#Sign up table
 class Signup(db.Model, SerializerMixin):
     __tablename__ = 'signups'
     
@@ -53,12 +55,13 @@ class Signup(db.Model, SerializerMixin):
     time = db.Column(db.Integer, nullable=False)
     camper_id = db.Column(db.Integer, db.ForeignKey('campers.id'), nullable=False)
     activity_id = db.Column(db.Integer, db.ForeignKey('activities.id'), nullable=False)
-    
+    #relationship between camper and signup
     camper = db.relationship('Camper', back_populates='signups')
+    #relationship between activity and relationshp
     activity = db.relationship('Activity', back_populates='signups')
     
     serialize_rules = ('-camper.signups', '-activity.signups')
-    
+    #time validator
     @validates('time')
     def validate_time(self, key, time):
         if not isinstance(time, int) or time < 0 or time > 24:
