@@ -64,6 +64,15 @@ def update_camper(id):
 def get_activities():
     activities = Activity.query.all()
     return jsonify([a.to_dict() for a in activities]), 200
+@app.delete("/activities/<int:id>")
+def delete_activity(id):
+    activity = Activity.query.get(id)
+    if not activity:
+        return jsonify({"error": "Activity not found"}), 404
+
+    db.session.delete(activity)
+    db.session.commit()
+    return "", 204
 
 
 if __name__=="__main__":
